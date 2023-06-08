@@ -76,7 +76,7 @@ In all error situations, this program must output errors to `stderr` as appropri
 
 This program, and the other 3 network programs, should use `localhost` as the target IP address/host. This makes them use the actual computer they all share as the target for the networking connections.
 
-# enc_client
+## enc_client
 This program connects to `enc_server`, and asks it to perform a one-time pad style encryption as detailed above. By itself, `enc_client` doesn’t do the encryption - `enc_server` does. The syntax of `enc_client` is as follows:
 
 ```enc_client plaintext key port```
@@ -93,13 +93,13 @@ If `enc_client` receives key or plaintext files with ANY bad characters in them,
 
 Again, any and all error text must be output to `stderr` (not into the plaintext or ciphertext files).
 
-# dec_server
+## dec_server
 This program performs exactly like `enc_server`, in syntax and usage. In this case, however, `dec_server` will decrypt ciphertext it is given, using the passed-in ciphertext and key. Thus, it returns plaintext again to `dec_client`.
 
-# dec_client
+## dec_client
 Similarly, this program will connect to `dec_server` and will ask it to decrypt ciphertext using a passed-in ciphertext and key, and otherwise performs exactly like `enc_client`, and must be runnable in the same three ways. `dec_client` should NOT be able to connect to `enc_server`, even if it tries to connect on the correct port - you’ll need to have the programs reject each other, as described in `enc_client`.
 
-# keygen
+## keygen
 This program creates a key file of specified length. The characters in the file generated will be any of the 27 allowed characters, generated using the standard Unix randomization methods. Do not create spaces every five characters, as has been historically done. Note that you specifically do not have to do any fancy random number generation: we’re not looking for cryptographically secure random number generation. rand()Links to an external site. is just fine. The last character keygen outputs should be a newline. Any error text must be output to stderr.
 
 The syntax for `keygen` is as follows:
@@ -111,5 +111,89 @@ Here is an example run, which creates a key of 256 characters and redirects stdo
 
 ```$ keygen 256 > mykey```
 
+# Example Usage
+Here is an example of usage, if you were testing your code from the command line:
+
+```
+$ cat plaintext1
+THE RED GOOSE FLIES AT MIDNIGHT STOP
+$ enc_server 57171 &
+$ dec_server 57172 &
+$ keygen 10
+EONHQCKQ I
+$ keygen 10 > mykey
+$ cat mykey
+VAONWOYVXP
+$ keygen 10 > myshortkey
+$ enc_client plaintext1 myshortkey 57171 > ciphertext1
+Error: key ‘myshortkey’ is too short
+$ echo $?
+1
+$ keygen 1024 > mykey
+$ enc_client plaintext1 mykey 57171 > ciphertext1
+$ cat ciphertext1
+WANAWTRLFTH RAAQGZSOHCTYS JDBEGYZQDQ
+$ keygen 1024 > mykey2
+$ dec_client ciphertext1 mykey 57172 > plaintext1_a
+$ dec_client ciphertext1 mykey2 57172 > plaintext1_b
+$ cat plaintext1_a
+THE RED GOOSE FLIES AT MIDNIGHT STOP
+$ cat plaintext1_b
+WSXFHCJAEISWQRNO L ZAGDIAUAL IGGTKBW
+$ cmp plaintext1 plaintext1_a
+$ echo $?
+0
+$ cmp plaintext1 plaintext1_b
+plaintext1 plaintext1_b differ: byte 1, line 1
+$ echo $?
+1
+$ enc_client plaintext5 mykey 57171
+enc_client error: input contains bad characters
+$ echo $?
+1
+$ enc_client plaintext3 mykey 57172
+Error: could not contact enc_server on port 57172
+$ echo $?
+2
+$
+```
+# Compilation Script
+You can have as many C files for your programs as you want. You must also submit a bash shell script called `compileall` that creates 5 executable programs from your files. These 5 programs must be created in the same directory as `compileall`. The programs must be named `enc_server`, `enc_client`, `dec_server`, `dec_client` and `keygen`.
+
+If you have only 5 C files, each with the same name as the executable program it will produce, you can use and submit the following shell script as your `compileall` script:
+
+```
+#!/bin/bash
+gcc -o enc_server enc_server.c
+gcc -o enc_client enc_client.c
+gcc -o dec_server dec_server.c
+gcc -o dec_client dec_client.c
+gcc -o keygen keygen.c
+```
+**Note**: You are allowed to submit a `Makefile` instead of a compileall script. However, running the Makefile must create the 5 executable files with the names specified above and these files must be created in the same directory as your Makefile.
+
+# Hints
+## Where to Start
+First, write `keygen` - it’s simple and fun! Then, use our sample network programs client.cLinks to an external site. and server.cLinks to an external site. (you don’t have to cite your use of them) to implement `enc_client` and `enc_server`. Once they are functional, copy them and begin work on `dec_client` and `dec_server`.
+
+If you have questions about what your programs needs to be able to do, just examine the grading script. Your programs have to deal with exactly what’s in there: no more, no less.
+
+## Sending and Receiving Data
+Recall that when sending data, not all of the data may get written with just one call to `send`. Similarly, when receiving data, not all the data may be read by one call to `recv`. This occurs because of network interruptions, server load, and other factors. You’ll need to carefully watch the number of characters read and/or written, as appropriate. If the number returned is less than what you intended, you’ll need to restart the process from where it stopped. This means you’ll need to wrap a loop around the send/receive routines to ensure they finish their job before continuing. If you try to send too much data at once, the server will likely break the transmission. Consider setting a maximum send size, breaking the transmission yourself every 1000 characters, say.
+
+There are a few ways to handle knowing how much data you need to send in a given transmission. One way is to send an integer from client to server (or vice versa) first, informing the other side how much is coming. This relatively small integer is unlikely to be split and interrupted. Another way is to have the listening side looking for a termination character that it recognizes as the end of the transmission string. It could loop, for example, until it has seen that termination character.
+
+## Concurrency Implications
+Remember that only one socket can be bound to a port at a time. Multiple incoming connections all queue up on the socket that has had `listen` called on it for that port. After each `accept` call is made, a new socket file descriptor is returned which is your server’s handle to that TCP connection. The server can `accept` multiple incoming streams, and communicate with all of them, by continuing to call accept, generating a new socket file descriptor each time.
+
+## About Newlines
+You are only supposed to accept the 26 letters of alphabet and the “space” character as valid for encrypting and decrypting. However, all of the plaintext input files end with a newline character, and all text files you generate must end in a newline character.
+
+When one of your programs reads in an input file, strip off the newline. Then encrypt and decrypt the text string, again with no newline character. When you send the result to `stdout`, or save results into a file, you must tack a newline to the end, or your length will be off in the grading script. Note that the newline character affects the length of files as reported by the wc command! Try it!
+
+## About Reusing Sockets
+In the file p5testscript, you can select which ports to use: I recommend ports in the 50000+ range. However, Unix doesn’t immediately let go of the ports you use after your program finishes! I highly recommend that you frequently change and randomize the ports you’re using, to make sure you’re not using ports that someone else is playing with. In addition, to allow your program to continue to use the same port (your mileage may vary), read the man page for `setsockopt` at Beej's Guide to Network ProgrammingLinks to an external site. and then play around with this function:
+
+```setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));```
 
 
