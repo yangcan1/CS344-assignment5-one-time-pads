@@ -196,4 +196,12 @@ In the file p5testscript, you can select which ports to use: I recommend ports i
 
 ```setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));```
 
+# Grading
+In a bash prompt, on our class server, the graders will run the `compileall` script (or your `Makefile`), and will then run the `p5testscript`. They will make a reasonable effort to make your code compile, but if it doesn’t compile, you’ll receive a zero on this assignment. If it compiles, then `p5testscript` script will be run for final grading in a bash prompt on our class server os1 in the following manner (where numbers are filled in for RANDOM_PORT1 and RANDOM_PORT2)
 
+```$ ./p5testscript RANDOM_PORT1 RANDOM_PORT2 > mytestresults 2>&1```
+The graders will change the ports around each time they run the grading script, to make sure the ports used aren’t in-use. Points will be assigned according to this grading script.
+
+Most of the points for completing this assignment are described in the grading script, while the final 10 points will be based on your style, readability, and commenting. Comment well, often, and verbosely (at least every five lines, say): we want to see that you are telling us WHY you are doing things, in addition to telling us WHAT you are doing.
+
+The TAs will use the instructions given in the file assignment5-otp-grading.pdf to grade your submission.
