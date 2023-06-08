@@ -174,7 +174,7 @@ gcc -o keygen keygen.c
 
 # Hints
 ## Where to Start
-First, write `keygen` - it’s simple and fun! Then, use our sample network programs client.cLinks to an external site. and server.cLinks to an external site. (you don’t have to cite your use of them) to implement `enc_client` and `enc_server`. Once they are functional, copy them and begin work on `dec_client` and `dec_server`.
+First, write `keygen` - it’s simple and fun! Then, use our sample network programs [client.c](https://replit.com/@cs344/83clientc?lite=true#client.c) and [server.c](https://replit.com/@cs344/83serverc?lite=true#server.c) (you don’t have to cite your use of them) to implement `enc_client` and `enc_server`. Once they are functional, copy them and begin work on `dec_client` and `dec_server`.
 
 If you have questions about what your programs needs to be able to do, just examine the grading script. Your programs have to deal with exactly what’s in there: no more, no less.
 
