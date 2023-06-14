@@ -29,19 +29,18 @@ void setupAddressStruct(struct sockaddr_in* address, int portNumber){
 }
 
 // Learned and modified from github: https://github.com/JetLiTheQT/OneTimePads/blob/main/enc_server.c#L192
-void encryption(char* ciphertext, char* plaintext, char* key) {
+void decryption(char* ciphertext, char* plaintext, char* key) {
     int length = strlen(plaintext);
     for (int i = 0; i < length; i++) {
         ciphertext[i] = '\0';
-        int p = plaintext[i]; // Plaintext character as integer (0-25)
-        int k = key[i]; // key character as integer (0-25)
+        int p = (plaintext[i] == ' ') ? 26 : plaintext[i] - 'A'; // Plaintext character as integer (0-25)
+        int k = (key[i] == ' ') ? 26 : key[i] - 'A'; // key character as integer (0-25)
         int c;
-        if (plaintext[i] == ' ') { // Space
-            c = 25;
-        } else { // A-Z
-            c = (p + k) % 26;
-        }
-        ciphertext[i] = c + 'A';
+
+        c = (p+k)%27;
+
+        ciphertext[i] = (c == 26) ? ' ': c+'A';
+
     }
     ciphertext[length] = '\0';
 }
