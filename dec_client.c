@@ -6,7 +6,7 @@
 #include <sys/socket.h> // send(),recv()
 #include <netdb.h>      // gethostbyname()
 
-#define MAX_SIZE 100000 
+#define MAX_SIZE 200000 
 
 /**
 * Client code
@@ -81,7 +81,8 @@ int main(int argc, char *argv[]) {
     }
 
     // Make sure ciphertext has no bad characters
-    for (int i = 0; i < len_ciphertext; i++) {
+    int i;
+    for (i = 0; i < len_ciphertext; i++) {
         if (!((ciphertext[i] >= 'A' && ciphertext[i] <= 'Z') || ciphertext[i] == ' ')) {
             error("ERROR There is bad characters");
         }

@@ -6,7 +6,7 @@
 #include <sys/socket.h> // send(),recv()
 #include <netdb.h>      // gethostbyname()
 
-#define MAX_SIZE 100000 
+#define MAX_SIZE 200000 
 
 /**
 * Client code
@@ -81,7 +81,8 @@ int main(int argc, char *argv[]) {
     }
 
     // Make sure plaintext has no bad characters
-    for (int i = 0; i < len_plaintext; i++) {
+    int i;
+    for (i = 0; i < len_plaintext; i++) {
         if (!((plaintext[i] >= 'A' && plaintext[i] <= 'Z') || plaintext[i] == ' ')) {
             error("ERROR There is bad characters");
         }
@@ -109,12 +110,18 @@ int main(int argc, char *argv[]) {
 
     // Send message to server
     // Write to the server
-    charsWritten = send(socketFD, buffer, strlen(buffer), 0); 
-    if (charsWritten < 0){
-        error("CLIENT: ERROR writing to socket");
-    }
-    if (charsWritten < strlen(buffer)){
-        printf("CLIENT: WARNING: Not all data written to socket!\n");
+    // Learned and modified from github: https://github.com/GrantKop/CS344-OS1/blob/main/kopczeng_program5/assignment5/enc_server.c
+    charsWritten = 0;
+    int bytesSent = 0;
+    int messageLength = strlen(buffer);
+    
+    while (charsWritten < messageLength) {
+        bytesSent = send(socketFD, buffer, strlen(buffer), 0); 
+        if (bytesSent < 0) {
+            error("CLIENT: ERROR writing to socket");
+            exit(1);
+        }
+        charsWritten += bytesSent;
     }
 
     // Get return message from server

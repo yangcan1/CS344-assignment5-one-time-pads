@@ -6,7 +6,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#define MAX_SIZE 100000 
+#define MAX_SIZE 200000 
 
 // Error function used for reporting issues
 void error(const char *msg) {
@@ -31,7 +31,8 @@ void setupAddressStruct(struct sockaddr_in* address, int portNumber){
 // Learned and modified from github: https://github.com/JetLiTheQT/OneTimePads/blob/main/enc_server.c#L192
 void decryption(char* ciphertext, char* plaintext, char* key) {
     int length = strlen(ciphertext);
-    for (int i = 0; i < length; i++) {
+    int i;
+    for (i = 0; i < length; i++) {
         plaintext[i] = '\0';
         int c = (ciphertext[i] == ' ')? 26 : ciphertext[i] - 'A'; // ciphertext character as integer (0-25)
         int k = (key[i] == ' ') ? 26 : key[i] - 'A'; // key character as integer (0-25)

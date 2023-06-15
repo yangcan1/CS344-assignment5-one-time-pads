@@ -24,7 +24,7 @@ ERROR key is shorter than plaintext: Success
 #-----------------------------------------
 #enc_client plaintext1 key70000 $encport
 #20 POINTS: Should return encrypted version of plaintext1
-IFWSYIZVTOI XDMXPKDJHJVNYUFASNJAMBYQ
+CTSVAQUJJFPCJMGIMHTADFQAUCGJQUPTQTTN
 
 #-----------------------------------------
 #enc_client plaintext1 key70000 $encport > ciphertext1
@@ -40,7 +40,7 @@ ciphertext1 exists!
 
 #-----------------------------------------
 #5 POINTS: ciphertext1 should look encrypted
-IFWSYIZVTOI XDMXPKDJHJVNYUFASNJAMBYQ
+CTSVAQUJJFPCJMGIMHTADFQAUCGJQUPTQTTN
 
 #-----------------------------------------
 #dec_client ciphertext1 key70000 $encport
@@ -72,83 +72,82 @@ plaintext1_a exists!
 #5 POINTS: Should be only one error about plaintext5 being bad
 Ten second sleep, your program must complete in this time
 ERROR There is bad characters: Success
-./p5testscript: line 123: 90787 Segmentation fault      (core dumped) ./enc_client plaintext4 key70000 $encport > ciphertext4
-total 1728
-drwxrwx---. 3 yangca upg19030   796 Jun 14 17:42 ./
+total 1872
+drwxrwx---. 3 yangca upg19030   796 Jun 14 18:50 ./
 drwxrwx---. 3 yangca upg19030    49 Jun 13 20:08 ../
 -rw-rw----. 1 yangca upg19030  1304 Jun 13 23:37 abc.c
--rw-rw----. 1 yangca upg19030    37 Jun 14 17:42 ciphertext1
--rw-rw----. 1 yangca upg19030   317 Jun 14 17:42 ciphertext2
--rw-rw----. 1 yangca upg19030    17 Jun 14 17:42 ciphertext3
--rw-rw----. 1 yangca upg19030     0 Jun 14 17:42 ciphertext4
--rw-rw----. 1 yangca upg19030     0 Jun 14 17:42 ciphertext5
--rwxrwx---. 1 yangca upg19030   214 Jun 14 15:08 compileall.sh
--rwxrwx---. 1 yangca upg19030 13592 Jun 14 17:33 dec_client
--rw-rw----. 1 yangca upg19030  4139 Jun 14 16:48 dec_client.c
--rwxrwx---. 1 yangca upg19030 13536 Jun 14 17:33 dec_server
--rw-rw----. 1 yangca upg19030  4931 Jun 14 16:45 dec_server.c
--rwxrwx---. 1 yangca upg19030 13592 Jun 14 17:33 enc_client
--rw-rw----. 1 yangca upg19030  4123 Jun 14 14:00 enc_client.c
--rwxrwx---. 1 yangca upg19030 13536 Jun 14 17:33 enc_server
--rw-rw----. 1 yangca upg19030  4876 Jun 14 16:34 enc_server.c
-drwxrwx---. 8 yangca upg19030   327 Jun 14 17:42 .git/
--rw-rw----. 1 yangca upg19030    21 Jun 14 17:42 key20
--rw-rw----. 1 yangca upg19030 70001 Jun 14 17:42 key70000
--rwxrwx---. 1 yangca upg19030  8600 Jun 14 17:33 keygen
--rw-rw----. 1 yangca upg19030   469 Jun 12 15:04 keygen.c
+-rw-rw----. 1 yangca upg19030    37 Jun 14 18:50 ciphertext1
+-rw-rw----. 1 yangca upg19030   317 Jun 14 18:50 ciphertext2
+-rw-rw----. 1 yangca upg19030    17 Jun 14 18:50 ciphertext3
+-rw-rw----. 1 yangca upg19030 43777 Jun 14 18:50 ciphertext4
+-rw-rw----. 1 yangca upg19030     0 Jun 14 18:50 ciphertext5
+-rwxrwx---. 1 yangca upg19030   159 Jun 14 18:10 compileall.sh
+-rwxrwx---. 1 yangca upg19030 13592 Jun 14 18:49 dec_client
+-rw-rw----. 1 yangca upg19030  4146 Jun 14 18:49 dec_client.c
+-rwxrwx---. 1 yangca upg19030 13536 Jun 14 18:49 dec_server
+-rw-rw----. 1 yangca upg19030  4938 Jun 14 18:49 dec_server.c
+-rwxrwx---. 1 yangca upg19030 13592 Jun 14 18:49 enc_client
+-rw-rw----. 1 yangca upg19030  4352 Jun 14 18:49 enc_client.c
+-rwxrwx---. 1 yangca upg19030 13536 Jun 14 18:49 enc_server
+-rw-rw----. 1 yangca upg19030  5347 Jun 14 18:49 enc_server.c
+drwxrwx---. 8 yangca upg19030   327 Jun 14 18:50 .git/
+-rw-rw----. 1 yangca upg19030    21 Jun 14 18:50 key20
+-rw-rw----. 1 yangca upg19030 70001 Jun 14 18:50 key70000
+-rwxrwx---. 1 yangca upg19030  8600 Jun 14 18:49 keygen
+-rw-rw----. 1 yangca upg19030   476 Jun 14 18:13 keygen.c
 -rw-rw----. 1 yangca upg19030 70001 Jun 14 17:31 mykey
--rwxrwx---. 1 yangca upg19030  5388 Jun 13 20:03 p5testscript
+-rwxrwx---. 1 yangca upg19030  5388 Jun 14 18:05 p5testscript
 -rw-rw----. 1 yangca upg19030    37 Jun 13 20:09 plaintext1
 -rw-rw----. 1 yangca upg19030   317 Jun 13 20:10 plaintext2
 -rw-rw----. 1 yangca upg19030    17 Jun 14 14:15 plaintext3
 -rw-rw----. 1 yangca upg19030 69333 Jun 13 20:10 plaintext4
 -rw-rw----. 1 yangca upg19030    42 Jun 13 20:10 plaintext5
 -rw-rw----. 1 yangca upg19030 17824 Jun 11 23:11 README.md
--rw-rw----. 1 yangca upg19030  2655 Jun 14 17:42 result
+-rw-rw----. 1 yangca upg19030  2529 Jun 14 18:50 result
 
 #-----------------------------------------
 #15 POINTS: concurrent test of decryption - look for 4 plaintext#_a files that match the plaintext# files
 #Ten second sleep, your program must complete in this time
-total 1824
-drwxrwx---. 3 yangca upg19030   916 Jun 14 17:42 ./
+total 2112
+drwxrwx---. 3 yangca upg19030   916 Jun 14 18:50 ./
 drwxrwx---. 3 yangca upg19030    49 Jun 13 20:08 ../
 -rw-rw----. 1 yangca upg19030  1304 Jun 13 23:37 abc.c
--rw-rw----. 1 yangca upg19030    37 Jun 14 17:42 ciphertext1
--rw-rw----. 1 yangca upg19030   317 Jun 14 17:42 ciphertext2
--rw-rw----. 1 yangca upg19030    17 Jun 14 17:42 ciphertext3
--rw-rw----. 1 yangca upg19030     0 Jun 14 17:42 ciphertext4
--rw-rw----. 1 yangca upg19030     0 Jun 14 17:42 ciphertext5
--rwxrwx---. 1 yangca upg19030   214 Jun 14 15:08 compileall.sh
--rwxrwx---. 1 yangca upg19030 13592 Jun 14 17:33 dec_client
--rw-rw----. 1 yangca upg19030  4139 Jun 14 16:48 dec_client.c
--rwxrwx---. 1 yangca upg19030 13536 Jun 14 17:33 dec_server
--rw-rw----. 1 yangca upg19030  4931 Jun 14 16:45 dec_server.c
--rwxrwx---. 1 yangca upg19030 13592 Jun 14 17:33 enc_client
--rw-rw----. 1 yangca upg19030  4123 Jun 14 14:00 enc_client.c
--rwxrwx---. 1 yangca upg19030 13536 Jun 14 17:33 enc_server
--rw-rw----. 1 yangca upg19030  4876 Jun 14 16:34 enc_server.c
-drwxrwx---. 8 yangca upg19030   327 Jun 14 17:42 .git/
--rw-rw----. 1 yangca upg19030    21 Jun 14 17:42 key20
--rw-rw----. 1 yangca upg19030 70001 Jun 14 17:42 key70000
--rwxrwx---. 1 yangca upg19030  8600 Jun 14 17:33 keygen
--rw-rw----. 1 yangca upg19030   469 Jun 12 15:04 keygen.c
+-rw-rw----. 1 yangca upg19030    37 Jun 14 18:50 ciphertext1
+-rw-rw----. 1 yangca upg19030   317 Jun 14 18:50 ciphertext2
+-rw-rw----. 1 yangca upg19030    17 Jun 14 18:50 ciphertext3
+-rw-rw----. 1 yangca upg19030 43777 Jun 14 18:50 ciphertext4
+-rw-rw----. 1 yangca upg19030     0 Jun 14 18:50 ciphertext5
+-rwxrwx---. 1 yangca upg19030   159 Jun 14 18:10 compileall.sh
+-rwxrwx---. 1 yangca upg19030 13592 Jun 14 18:49 dec_client
+-rw-rw----. 1 yangca upg19030  4146 Jun 14 18:49 dec_client.c
+-rwxrwx---. 1 yangca upg19030 13536 Jun 14 18:49 dec_server
+-rw-rw----. 1 yangca upg19030  4938 Jun 14 18:49 dec_server.c
+-rwxrwx---. 1 yangca upg19030 13592 Jun 14 18:49 enc_client
+-rw-rw----. 1 yangca upg19030  4352 Jun 14 18:49 enc_client.c
+-rwxrwx---. 1 yangca upg19030 13536 Jun 14 18:49 enc_server
+-rw-rw----. 1 yangca upg19030  5347 Jun 14 18:49 enc_server.c
+drwxrwx---. 8 yangca upg19030   327 Jun 14 18:50 .git/
+-rw-rw----. 1 yangca upg19030    21 Jun 14 18:50 key20
+-rw-rw----. 1 yangca upg19030 70001 Jun 14 18:50 key70000
+-rwxrwx---. 1 yangca upg19030  8600 Jun 14 18:49 keygen
+-rw-rw----. 1 yangca upg19030   476 Jun 14 18:13 keygen.c
 -rw-rw----. 1 yangca upg19030 70001 Jun 14 17:31 mykey
--rwxrwx---. 1 yangca upg19030  5388 Jun 13 20:03 p5testscript
+-rwxrwx---. 1 yangca upg19030  5388 Jun 14 18:05 p5testscript
 -rw-rw----. 1 yangca upg19030    37 Jun 13 20:09 plaintext1
--rw-rw----. 1 yangca upg19030     1 Jun 14 17:42 plaintext1_a
+-rw-rw----. 1 yangca upg19030    37 Jun 14 18:50 plaintext1_a
 -rw-rw----. 1 yangca upg19030   317 Jun 13 20:10 plaintext2
--rw-rw----. 1 yangca upg19030     1 Jun 14 17:42 plaintext2_a
+-rw-rw----. 1 yangca upg19030   317 Jun 14 18:50 plaintext2_a
 -rw-rw----. 1 yangca upg19030    17 Jun 14 14:15 plaintext3
--rw-rw----. 1 yangca upg19030     1 Jun 14 17:42 plaintext3_a
+-rw-rw----. 1 yangca upg19030    17 Jun 14 18:50 plaintext3_a
 -rw-rw----. 1 yangca upg19030 69333 Jun 13 20:10 plaintext4
--rw-rw----. 1 yangca upg19030     1 Jun 14 17:42 plaintext4_a
+-rw-rw----. 1 yangca upg19030 43777 Jun 14 18:50 plaintext4_a
 -rw-rw----. 1 yangca upg19030    42 Jun 13 20:10 plaintext5
 -rw-rw----. 1 yangca upg19030 17824 Jun 11 23:11 README.md
--rw-rw----. 1 yangca upg19030  4705 Jun 14 17:42 result
+-rw-rw----. 1 yangca upg19030  4579 Jun 14 18:50 result
 
 #-----------------------------------------
 #Cleaning up - ignore Operation Not Permitted errors
-./p5testscript: line 141: 90008 Terminated              ./dec_server $decport
-./p5testscript: line 143: 90007 Terminated              ./enc_server $encport
+./p5testscript: line 141: 91982 Terminated              ./dec_server $decport
+./p5testscript: line 143: 91981 Terminated              ./enc_server $encport
 
 #SCRIPT COMPLETE

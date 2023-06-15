@@ -11,7 +11,8 @@ int main(int argc, char* argv[]) {
     }
     int num = atoi(argv[1]);
 
-    for (int i = 0; i < num; i++) {
+    int i;
+    for (i = 0; i < num; i++) {
         int rand_num = 65 + rand() % 27;
 
         if (rand_num == 91) {

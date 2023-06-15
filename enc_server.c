@@ -6,7 +6,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#define MAX_SIZE 100000 
+#define MAX_SIZE 200000 
 
 // Error function used for reporting issues
 void error(const char *msg) {
@@ -31,7 +31,8 @@ void setupAddressStruct(struct sockaddr_in* address, int portNumber){
 // Learned and modified from github: https://github.com/JetLiTheQT/OneTimePads/blob/main/enc_server.c#L192
 void encryption(char* ciphertext, char* plaintext, char* key) {
     int length = strlen(plaintext);
-    for (int i = 0; i < length; i++) {
+    int i;
+    for (i = 0; i < length; i++) {
         ciphertext[i] = '\0';
         int p = (plaintext[i] == ' ') ? 26 : plaintext[i] - 'A'; // Plaintext character as integer (0-25)
         int k = (key[i] == ' ') ? 26 : key[i] - 'A'; // key character as integer (0-25)
@@ -46,7 +47,7 @@ void encryption(char* ciphertext, char* plaintext, char* key) {
 }
 
 int main(int argc, char *argv[]){
-    int connectionSocket, charsRead;
+    int connectionSocket, charsWritten, charsRead;
     char buffer[MAX_SIZE] = {'\0'}, ciphertext[MAX_SIZE] = {'\0'}, plaintext[MAX_SIZE] = {'\0'}, key[MAX_SIZE] = {'\0'}, verifier[10] = {'\0'};
     struct sockaddr_in serverAddress, clientAddress;
     socklen_t sizeOfClientInfo = sizeof(clientAddress);
@@ -120,10 +121,20 @@ int main(int argc, char *argv[]){
                 // fprintf(stderr, "\n-- Ciphertext: %s\n", ciphertext);
 
                 // Send the ciphertext back to the client
-                charsRead = send(connectionSocket, ciphertext, strlen(ciphertext), 0);
-                if (charsRead < 0){
-                    error("ERROR writing to socket");
+                // Learned and modified from github: https://github.com/GrantKop/CS344-OS1/blob/main/kopczeng_program5/assignment5/enc_server.c
+                charsWritten = 0;
+                int bytesSent = 0;
+                int messageLength = strlen(ciphertext);
+
+                while (charsWritten < messageLength) {
+                    bytesSent = send(connectionSocket, ciphertext, strlen(ciphertext), 0); 
+                    if (bytesSent < 0) {
+                        error("SERVER: ERROR writing to socket");
+                        exit(1);
+                    }
+                    charsWritten += bytesSent;
                 }
+
 
                 memset(plaintext,'\0', MAX_SIZE);
                 memset(key,'\0', MAX_SIZE);
