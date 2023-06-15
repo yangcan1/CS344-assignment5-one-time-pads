@@ -111,7 +111,7 @@ int main(int argc, char *argv[]){
 
                 if (strcmp(verifier, "ENC") != 0) {
                     fprintf(stderr, "SERVER: ERROR, client is not enc_client\n");
-                    int notEnc = send(connectionSocket, "Client error: dec_client cannot use enc_server\n", 49, 0);
+                    int notEnc = send(connectionSocket, "Client error: dec_client cannot use enc_server\n", 48, 0);
                     close(connectionSocket);
                     exit(2);
                 }
@@ -127,7 +127,7 @@ int main(int argc, char *argv[]){
                 int messageLength = strlen(ciphertext);
 
                 while (charsWritten < messageLength) {
-                    bytesSent = send(connectionSocket, ciphertext, strlen(ciphertext), 0); 
+                    bytesSent = send(connectionSocket, &ciphertext[charsWritten], strlen(ciphertext), 0); 
                     if (bytesSent < 0) {
                         error("SERVER: ERROR writing to socket");
                         exit(1);
@@ -144,7 +144,9 @@ int main(int argc, char *argv[]){
                 close(connectionSocket); 
                 exit(0);
 
-            default: // Parent process
+            default:; // Parent process
+                int childStatus;
+                wait(&childStatus);
                 close(connectionSocket); 
             
         }

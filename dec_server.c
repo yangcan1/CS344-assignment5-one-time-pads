@@ -121,10 +121,25 @@ int main(int argc, char *argv[]){
                 // fprintf(stderr, "\n-- Plaintext: %s\n", plaintext);
 
                 // Send the plaintext back to the client
-                charsRead = send(connectionSocket, plaintext, strlen(plaintext), 0);
-                if (charsRead < 0){
-                    error("ERROR writing to socket");
+
+                int charsWritten = 0;
+                int bytesSent = 0;
+                int messageLength = strlen(plaintext);
+
+                while (charsWritten < messageLength) {
+                    bytesSent = send(connectionSocket, &plaintext[charsWritten], strlen(ciphertext), 0); 
+                    if (bytesSent < 0) {
+                        error("SERVER: ERROR writing to socket");
+                        exit(1);
+                    }
+                    charsWritten += bytesSent;
                 }
+
+
+                // charsRead = send(connectionSocket, plaintext, strlen(plaintext), 0);
+                // if (charsRead < 0){
+                //     error("ERROR writing to socket");
+                // }
 
                 memset(ciphertext,'\0', MAX_SIZE);
                 memset(key,'\0', MAX_SIZE);

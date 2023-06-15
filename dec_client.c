@@ -120,12 +120,35 @@ int main(int argc, char *argv[]) {
 
     // Get return message from server
     // Clear out the buffer again for reuse
-    memset(plaintext, '\0', sizeof(buffer));
-    // Read data from the socket, leaving \0 at end
-    charsRead = recv(socketFD, plaintext, sizeof(buffer) - 1, 0); 
-    if (charsRead < 0){
-        error("CLIENT: ERROR reading from socket");
+
+    int bytesReceived = 0;
+    charsRead = 0;
+    char temp_buffer[MAX_SIZE];
+    while (charsRead < strlen(ciphertext)) {
+        memset(temp_buffer, '\0', sizeof(temp_buffer));
+        bytesReceived = recv(socketFD, temp_buffer, 1000, 0);
+
+        charsRead += bytesReceived;  
+
+        if (bytesReceived == 0) {
+            // Done reading
+            break;
+        }
+
+        if (charsRead < 0) {
+            error("CLIENT: Error reading from socket");
+            break;
+        }
+        strcat(plaintext, temp_buffer);
     }
+
+
+    // memset(plaintext, '\0', sizeof(buffer));
+    // // Read data from the socket, leaving \0 at end
+    // charsRead = recv(socketFD, plaintext, sizeof(buffer) - 1, 0); 
+    // if (charsRead < 0){
+    //     error("CLIENT: ERROR reading from socket");
+    // }
 
     // print out ciphertext
     printf("%s\n", plaintext);
