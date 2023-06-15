@@ -29,7 +29,7 @@ void setupAddressStruct(struct sockaddr_in* address, int portNumber){
 }
 
 // Learned and modified from github: https://github.com/JetLiTheQT/OneTimePads/blob/main/enc_server.c#L192
-void decryption(char* ciphertext, char* plaintext, char* key) {
+void encryption(char* ciphertext, char* plaintext, char* key) {
     int length = strlen(plaintext);
     for (int i = 0; i < length; i++) {
         ciphertext[i] = '\0';

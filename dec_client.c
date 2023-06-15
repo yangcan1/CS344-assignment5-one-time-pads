@@ -46,23 +46,23 @@ int main(int argc, char *argv[]) {
     int socketFD, portNumber, charsWritten, charsRead;
     struct sockaddr_in serverAddress;
     char buffer[MAX_SIZE] = {'\0'}, ciphertext[MAX_SIZE] = {'\0'}, plaintext[MAX_SIZE] = {'\0'}, key[MAX_SIZE] = {'\0'}, verifier[10] = {'\0'};
-    strcpy(verifier, "ENC,");
+    strcpy(verifier, "DEC,");
 
     // Check usage & args
     if (argc < 4) { 
-        fprintf(stderr,"USAGE: %s plaintext key port\n", argv[0]); 
+        fprintf(stderr,"USAGE: %s ciphertext key port\n", argv[0]); 
         exit(0); 
     } 
 
-    // get plaintext from FILE pointer
-    FILE *f_plaintext = fopen(argv[1], "r");
-    if (f_plaintext == NULL) {
+    // get ciphertext from FILE pointer
+    FILE *f_ciphertext = fopen(argv[1], "r");
+    if (f_ciphertext == NULL) {
         error("ERROR Failed to open file 1");
     } else {
-        fgets(plaintext, MAX_SIZE, f_plaintext);
+        fgets(ciphertext, MAX_SIZE, f_ciphertext);
     }
-    fclose(f_plaintext);
-    plaintext[strcspn(plaintext, "\n")] = '\0';
+    fclose(f_ciphertext);
+    ciphertext[strcspn(ciphertext, "\n")] = '\0';
 
     // get keytext from FILE pointer
     FILE *f_key = fopen(argv[2], "r");
@@ -75,14 +75,14 @@ int main(int argc, char *argv[]) {
     key[strcspn(key, "\n")] = '\0';
 
     // Complare if the length is same
-    int len_plaintext = strlen(plaintext), len_key = strlen(key);
-    if (len_plaintext > len_key) {
-        error("ERROR key is shorter than plaintext");
+    int len_ciphertext = strlen(ciphertext), len_key = strlen(key);
+    if (len_ciphertext > len_key) {
+        error("ERROR key is shorter than ciphertext");
     }
 
-    // Make sure plaintext has no bad characters
-    for (int i = 0; i < len_plaintext; i++) {
-        if (!((plaintext[i] >= 'A' && plaintext[i] <= 'Z') || plaintext[i] == ' ')) {
+    // Make sure ciphertext has no bad characters
+    for (int i = 0; i < len_ciphertext; i++) {
+        if (!((ciphertext[i] >= 'A' && ciphertext[i] <= 'Z') || ciphertext[i] == ' ')) {
             error("ERROR There is bad characters");
         }
     }
@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
     // Clear out the buffer array
     memset(buffer, '\0', sizeof(buffer));
 
-    sprintf(buffer, "%s%s,%s", verifier, plaintext, key);
+    sprintf(buffer, "%s%s,%s", verifier, ciphertext, key);
     
 
     // Send message to server
@@ -119,15 +119,15 @@ int main(int argc, char *argv[]) {
 
     // Get return message from server
     // Clear out the buffer again for reuse
-    memset(ciphertext, '\0', sizeof(buffer));
+    memset(plaintext, '\0', sizeof(buffer));
     // Read data from the socket, leaving \0 at end
-    charsRead = recv(socketFD, ciphertext, sizeof(buffer) - 1, 0); 
+    charsRead = recv(socketFD, plaintext, sizeof(buffer) - 1, 0); 
     if (charsRead < 0){
         error("CLIENT: ERROR reading from socket");
     }
 
     // print out ciphertext
-    printf("%s\n", ciphertext);
+    printf("%s\n", plaintext);
 
 
 

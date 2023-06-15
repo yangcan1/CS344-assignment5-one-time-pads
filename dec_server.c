@@ -29,21 +29,20 @@ void setupAddressStruct(struct sockaddr_in* address, int portNumber){
 }
 
 // Learned and modified from github: https://github.com/JetLiTheQT/OneTimePads/blob/main/enc_server.c#L192
-void encryption(char* ciphertext, char* plaintext, char* key) {
-    int length = strlen(plaintext);
+void decryption(char* ciphertext, char* plaintext, char* key) {
+    int length = strlen(ciphertext);
     for (int i = 0; i < length; i++) {
-        ciphertext[i] = '\0';
-        int p = plaintext[i]; // Plaintext character as integer (0-25)
-        int k = key[i]; // key character as integer (0-25)
-        int c;
-        if (plaintext[i] == ' ') { // Space
-            c = 25;
-        } else { // A-Z
-            c = (p + k) % 26;
+        plaintext[i] = '\0';
+        int c = (ciphertext[i] == ' ')? 26 : ciphertext[i] - 'A'; // ciphertext character as integer (0-25)
+        int k = (key[i] == ' ') ? 26 : key[i] - 'A'; // key character as integer (0-25)
+        int p = (c - k) % 27;
+        
+        if (p < 0) {
+            p += 27;
         }
-        ciphertext[i] = c + 'A';
+        plaintext[i] = (p == 26) ? ' ' : p + 'A';
     }
-    ciphertext[length] = '\0';
+    plaintext[length] = '\0';
 }
 
 int main(int argc, char *argv[]){
@@ -105,28 +104,28 @@ int main(int argc, char *argv[]){
                 token = strtok(buffer, ",");
                 strcpy(verifier, token);
                 token = strtok(NULL, ",");
-                strcpy(plaintext, token);
+                strcpy(ciphertext, token);
                 token = strtok(NULL, ",");
                 strcpy(key, token);
 
-                if (strcmp(verifier, "ENC") != 0) {
-                    fprintf(stderr, "SERVER: ERROR, client is not enc_client\n");
-                    int notEnc = send(connectionSocket, "Client error: dec_client cannot use enc_server\n", 49, 0);
+                if (strcmp(verifier, "DEC") != 0) {
+                    fprintf(stderr, "SERVER: ERROR, Client and Server doesn't match\n");
+                    int notEnc = send(connectionSocket, "Client error: Please send me decryption file\n", 46, 0);
                     close(connectionSocket);
                     exit(2);
                 }
 
-                memset(ciphertext,'\0', MAX_SIZE);
-                encryption(ciphertext, plaintext, key);
-                // fprintf(stderr, "\n-- Ciphertext: %s\n", ciphertext);
+                memset(plaintext,'\0', MAX_SIZE);
+                decryption(ciphertext, plaintext, key);
+                // fprintf(stderr, "\n-- Plaintext: %s\n", plaintext);
 
-                // Send the ciphertext back to the client
-                charsRead = send(connectionSocket, ciphertext, strlen(ciphertext), 0);
+                // Send the plaintext back to the client
+                charsRead = send(connectionSocket, plaintext, strlen(plaintext), 0);
                 if (charsRead < 0){
                     error("ERROR writing to socket");
                 }
 
-                memset(plaintext,'\0', MAX_SIZE);
+                memset(ciphertext,'\0', MAX_SIZE);
                 memset(key,'\0', MAX_SIZE);
                 memset(verifier,'\0', 10);
 
